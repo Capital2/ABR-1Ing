@@ -20,9 +20,11 @@ void dicoAfficher(TArbre a){
         // if left child: concat, if right child: delete and concat
         if (isLeft)
         {
+            // override stack?
             strcat(buffer,node->val);
         }else
         {
+            // treat first case buffer[0]
             buffer[strlen(buffer)-1] = node->val;
         }
         
