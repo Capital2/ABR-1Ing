@@ -1,6 +1,7 @@
 #ifndef DICO_H_
 #define DICO_H_
 #include "arbre.h"
+#define BUFFER_MAX 100
 /* -------------------------------------------------------*/
 /* Primitives de gestion d’un dictionnaire */
 /* -------------------------------------------------------*/

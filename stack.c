@@ -1,6 +1,6 @@
 #include "stack.h"
 
-void push( stackPtr *top, TArbre x, int isLeft )
+void push( stackPtr top, TArbre x, int isLeft )
 {
     stackPtr nodePtr;
 
@@ -12,22 +12,22 @@ void push( stackPtr *top, TArbre x, int isLeft )
     {
         nodePtr->isLeft = isLeft;
         nodePtr -> data = x;
-        nodePtr -> ptr = *top;
-        *top = nodePtr;
+        nodePtr -> ptr = top;
+        top = nodePtr;
     }
 
     else
        printf("\nERROR !!! (Not enough space)");
    }
 
-TArbre pop(stackPtr *top)
+TArbre pop(stackPtr top)
 {
    TArbre pValue; //variable for value at the top
    stackPtr tempPtr; //temporary pointer
 
-   tempPtr = *top;
-   pValue = (*top) -> data;
-   *top = (*top) -> ptr;
+   tempPtr = top;
+   pValue = (top) -> data;
+   top = (top) -> ptr;
    free(tempPtr); //free temporary pointer value
    return pValue;
 }
