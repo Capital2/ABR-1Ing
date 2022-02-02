@@ -1,4 +1,5 @@
 #include "arbre.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 TArbre arbreConsVide(void){

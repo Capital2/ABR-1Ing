@@ -1,6 +1,7 @@
-
-typedef Noeds *TArbre;
+#ifndef ARBRE_H_
+#define ARBRE_H_
 typedef struct Noeds Noeds;
+typedef Noeds * TArbre;
 struct Noeds
 {
     int occur;
@@ -19,3 +20,4 @@ int arbreRacineNbOcc(TArbre a);
 TArbre arbreFilsGauche(TArbre a);
 TArbre arbreFilsDroit(TArbre a);
 void arbreSuppr(TArbre a);
+#endif

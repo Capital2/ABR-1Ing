@@ -1,5 +1,6 @@
+#ifndef DICO_H_
+#define DICO_H_
 #include "arbre.h"
-
 /* -------------------------------------------------------*/
 /* Primitives de gestion d’un dictionnaire */
 /* -------------------------------------------------------*/
@@ -10,3 +11,4 @@ int dicoNbOcc(char mot[], TArbre a);
 int dicoNbMotsDifferents(TArbre a); int
 dicoNbMotsTotal(TArbre a);
 /* -------------------------------------------------------*/
+#endif
