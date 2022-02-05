@@ -29,7 +29,7 @@ int main(){
     a->fd->fg->fd->fg = arbreCons('\0', 5, arbreConsVide(), arbreConsVide()); // do
 
     dicoAfficher(a);
-    printf("%d\n", dicoNbOcc("des",a));
+    printf("%d\n", dicoNbMotsDifferents(a));
     arbreSuppr(a);
     return 0;
 }

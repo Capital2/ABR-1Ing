@@ -23,7 +23,6 @@ void affichageRec(TArbre a, char* str, short bufidx)
     }
 }
 
-
 void dicoAfficher(TArbre a)
 {
     char str[BUFFER_MAX];
@@ -55,5 +54,16 @@ int dicoNbOcc(char mot[], TArbre a){
         
     }
     return 0;
+    
+}
+
+int dicoNbMotsDifferents(TArbre a){
+    if (a != NULL)
+    {
+        return ((a->val == '\0' ? 1 : 0) + dicoNbMotsDifferents(a->fd) + dicoNbMotsDifferents(a->fg));
+    }else
+    {
+        return 0;
+    }
     
 }
