@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void affichageRec(TArbre a, char str[BUFFER_MAX], short bufidx)
+void affichageRec(TArbre a, char* str, short bufidx)
 {
     if (!(arbreEstVide(a)))
     {
@@ -24,45 +24,36 @@ void affichageRec(TArbre a, char str[BUFFER_MAX], short bufidx)
 }
 
 
-// void dicoAfficher(TArbre a){
-//     if (a == NULL)
-//         return;
-//     int isLeft;
-//     char buffer[50] = "";
-//     // Create an empty stack and push (a) to it
-//     stackPtr nodeStack = NULL;
-//     push(nodeStack, a, 1);
-
-//     while (!checkEmpty(nodeStack)) {
-//         // Pop the top item from stack and print it
-//         isLeft = nodeStack->isLeft;
-//         TArbre node = pop(nodeStack);
-//         // if left child: concat, if right child: delete and concat
-//         if (isLeft)
-//         {
-//             // override stack?
-//             strcat(buffer,node->val);
-//         }else
-//         {
-//             // treat first case buffer[0]
-//             buffer[strlen(buffer)-1] = node->val;
-//         }
-
-//         // Push right and left children of the popped node to stack
-//         if (!arbreEstVide(node->fd))
-//             push(nodeStack, node->fd, 0);
-//         if (!arbreEstVide(node->fg))
-//             push(nodeStack, node->fg, 1);
-//         if (arbreEstVide(node->fd) || arbreEstVide(node->fg))
-//         {
-//             /* code */
-//         }
-
-//     }
-//}
-
 void dicoAfficher(TArbre a)
 {
     char str[BUFFER_MAX];
     affichageRec(a, str, 0);
+}
+
+int dicoNbOcc(char mot[], TArbre a){
+    TArbre ptr = a;
+    for (int i = 0; i <= strlen(mot); i++)
+    {
+        if (ptr == NULL)
+        {
+            return 0;
+        }
+        
+        if (ptr->val == mot[i])
+        {
+            if (ptr -> val == '\0')
+            {
+                return ptr->occur;
+            }
+            ptr = ptr->fg;
+            
+        }else
+        {
+            ptr = ptr ->fd;
+            i--; // cycling
+        }
+        
+    }
+    return 0;
+    
 }
