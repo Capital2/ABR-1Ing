@@ -57,6 +57,7 @@ int dicoNbOcc(char mot[], TArbre a){
     
 }
 
+// Calculating the number of null characters.
 int dicoNbMotsDifferents(TArbre a){
     if (a != NULL)
     {
