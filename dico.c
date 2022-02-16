@@ -121,3 +121,36 @@ int nombreAleatoire(int nombreMax)
 srand(time(NULL));
 return (rand() % nombreMax);
 }
+
+void dicoInsererMot(char mot[], TArbre pa) 
+
+{   static int i=0;
+ 
+ if(pa==NULL){
+        pa=arbreCons(mot[i], 0, arbreConsVide(), arbreConsVide());
+        if(mot[i]!='\0'){
+            i++;
+            dicoInsererMot(mot,pa->fg);
+        }
+    }
+
+    
+    if(mot[i] == pa->val){
+        i++; 
+       
+        dicoInsererMot(mot,pa->fg);
+    }
+    
+    if(mot[i]!=pa->val){
+        dicoInsererMot(mot,pa->fd);
+    }
+    
+    if(mot[i]=='\0' && pa->val!='\0'){
+        pa->occur++;
+    }
+
+   
+
+    
+
+    }
