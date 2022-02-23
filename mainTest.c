@@ -25,6 +25,7 @@ int main(){
     a->fd->fg->fg->fd = arbreCons('s', 0, arbreConsVide(), arbreConsVide());
     a->fd->fg->fg->fd->fg = arbreCons('\0', 4, arbreConsVide(), arbreConsVide()); // des
 */
+
 char motPioche[]={'c','a','s','\0'};
 TArbre a = arbreCons(motPioche[0], 0, arbreConsVide(), arbreConsVide());
      TArbre ar=a; 
@@ -42,9 +43,12 @@ TArbre a = arbreCons(motPioche[0], 0, arbreConsVide(), arbreConsVide());
         ar->fg = arbreCons(motPioche[i], 0, arbreConsVide(), arbreConsVide());
         ar=ar->fg;
     }
-   char mott[]={'c','e','\0'};
-   dicoAfficher(a);
-    dicoInsererMot(mott,a);
+   char mott[]="ce";
+   
+    dicoInsererMot(mott,&a);
+    dicoInsererMot(mott,&a);
+    dicoInsererMot("ces",&a);
+     dicoInsererMot("kls",&a);
     dicoAfficher(a);
     /* printf("%d\n", dicoNbMotsDifferents(a));
     arbreSuppr(a); */

@@ -122,35 +122,52 @@ srand(time(NULL));
 return (rand() % nombreMax);
 }
 
-void dicoInsererMot(char mot[], TArbre pa) 
+void dicoInsererMot(char mot[], TArbre *pa) 
 
-{   static int i=0;
+{   
+
  
- if(pa==NULL){
-        pa=arbreCons(mot[i], 0, arbreConsVide(), arbreConsVide());
-        if(mot[i]!='\0'){
-            i++;
-            dicoInsererMot(mot,pa->fg);
+ if(*pa!=NULL){
+        if(mot[0]!='\0'){
+        if((*pa)->val==mot[0]){
+            mot++;
+            dicoInsererMot(mot,&((*pa)->fg));}
+        else 
+            { if ((*pa)->fd != NULL){
+                dicoInsererMot(mot,&((*pa)->fd));
+            }
+              else
+              {
+              (*pa)->fd=arbreCons(mot[0], 0, arbreConsVide(), arbreConsVide()); 
+              dicoInsererMot(mot,&(*pa));
+              }
+            }
         }
-    }
+        else if ((*pa)->val!='\0'&& mot[0]=='\0')
+        {
+            TArbre a=arbreCons('\0', 1, arbreConsVide(), *pa);
+            *pa=a;
+        }
+        else if((*pa)->val == '\0' && mot[0] == '\0')
+        {
+            (*pa)->occur=(*pa)->occur+1;}
+    
+        }else
+        {
+            if(mot[0]!='\0'){
+                *pa=arbreCons(mot[0], 0, arbreConsVide(), arbreConsVide());
+                mot++;
+                dicoInsererMot(mot,&((*pa)->fg));
+            }
+            else{
+                *pa=arbreCons('\0', 1, arbreConsVide(), arbreConsVide());
+            }
+            }
+        }
+        
+    
+
 
     
-    if(mot[i] == pa->val){
-        i++; 
-       
-        dicoInsererMot(mot,pa->fg);
-    }
-    
-    if(mot[i]!=pa->val){
-        dicoInsererMot(mot,pa->fd);
-    }
-    
-    if(mot[i]=='\0' && pa->val!='\0'){
-        pa->occur++;
-    }
-
-   
-
     
 
-    }
