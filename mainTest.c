@@ -28,6 +28,8 @@ int main(){
     a->fd->fg->fd = arbreCons('o', 0, arbreConsVide(), arbreConsVide());
     a->fd->fg->fd->fg = arbreCons('\0', 5, arbreConsVide(), arbreConsVide()); // do
 
+    dicoInsererMot("hello", &a);
+    dicoInsererMot("hello", &a);
     dicoAfficher(a);
     printf("%d\n", dicoNbMotsDifferents(a));
     arbreSuppr(a);
