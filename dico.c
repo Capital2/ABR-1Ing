@@ -1,4 +1,5 @@
 #include "dico.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -55,7 +56,6 @@ int dicoNbOcc(char mot[], TArbre a)
     return 0;
 }
 
-// Calculating the number of null characters.
 int dicoNbMotsDifferents(TArbre a)
 {
     if (a != NULL)
@@ -68,54 +68,106 @@ int dicoNbMotsDifferents(TArbre a)
     }
 }
 
-// 1- reached a null child while mot isn't exhausted
-// => insert rest into left children
-// 2- mot's exhausted while still in arbre
-// => browse right children till we can insert a '\0'
-void dicoInsererMot(char mot[], TArbre *pa)
+int piocherMot(char *motPioche)
 {
-    // redundant code baddel brabbi
-    if (*mot != '\0')
+    FILE *dico = NULL; // Le pointeur de fichier qui va contenir notre fichier
+    int nombreMots = 0, numMotChoisi = 0, i = 0;
+    int caractereLu = 0;
+    dico = fopen("dico.txt", "r"); // On ouvre le dictionnaire en lecture seule
+
+    // On vérifie si on a réussi à ouvrir le dictionnaire
+    if (dico == NULL) // Si on n'a PAS réussi à ouvrir le fichier
     {
-        // while mot isn't exhauted
-        if ((*pa) != NULL)
+        printf("\nImpossible de charger le dictionnaire de mots");
+        return 0; // On retourne 0 pour indiquer que la fonction a échoué
+        // À la lecture du return, la fonction s'arrête immédiatement.
+    }
+
+    // On compte le nombre de mots dans le fichier (il suffit de compter les
+    // entrées \n
+    do
+    {
+        caractereLu = fgetc(dico);
+        if (caractereLu == '\n')
+            nombreMots++;
+    } while (caractereLu != EOF);
+
+    numMotChoisi = nombreAleatoire(nombreMots); // On pioche un mot au hasard
+
+    // On recommence à lire le fichier depuis le début. On s'arrête lorsqu'on est arrivé au bon
+    //mot
+    rewind(dico);
+    while (numMotChoisi > 0)
+    {
+        caractereLu = fgetc(dico);
+        if (caractereLu == '\n')
+            numMotChoisi--;
+    }
+
+    /* Le curseur du fichier est positionné au bon endroit.
+On n'a plus qu'à faire un fgets qui lira la ligne */
+    fgets(motPioche, 100, dico);
+
+    // On vire le \n à la fin
+    motPioche[strlen(motPioche) - 1] = '\0';
+    fclose(dico);
+
+    return 1; // Tout s'est bien passé, on retourne 1
+}
+
+int nombreAleatoire(int nombreMax)
+{
+    srand(time(NULL));
+    return (rand() % nombreMax);
+}
+
+void dicoInsererMot(char mot[], TArbre *pa)
+
+{
+
+    if (*pa != NULL)
+    {
+        if (mot[0] != '\0')
         {
             if ((*pa)->val == *mot)
             {
-                dicoInsererMot(++mot, &((*pa)->fg));
+                mot++;
+                dicoInsererMot(mot, &((*pa)->fg));
             }
             else
             {
-                dicoInsererMot(mot, &((*pa)->fd));
+                if ((*pa)->fd != NULL)
+                {
+                    dicoInsererMot(mot, &((*pa)->fd));
+                }
+                else
+                {
+                    (*pa)->fd = arbreCons(mot[0], 0, arbreConsVide(), arbreConsVide());
+                    dicoInsererMot(mot, &(*pa));
+                }
             }
-        }else
-        {
-            // case 1
-            do
-            {
-                *pa = arbreCons(*mot, 0, arbreConsVide(), arbreConsVide());
-                pa = &((*pa)->fg);
-                mot ++;
-            } while (*mot != '\0');
-            *pa = arbreCons(*mot, 1, arbreConsVide(), arbreConsVide());
         }
-        
-    }else
-    { // *mot = '\0'
-
-        if ((*pa) != NULL)
+        else if ((*pa)->val != '\0' && mot[0] == '\0')
         {
-            if ((*pa)->val == '\0')
-            {
-                ((*pa)->occur)++;
-            }else
-            {
-                dicoInsererMot(mot, &((*pa)->fd));
-            }
-        }else
+            TArbre a = arbreCons('\0', 1, arbreConsVide(), *pa);
+            *pa = a;
+        }
+        else if ((*pa)->val == '\0' && mot[0] == '\0')
         {
-            *pa = arbreCons(*mot, 1, arbreConsVide(), arbreConsVide());
-        }    
+            (*pa)->occur = (*pa)->occur + 1;
+        }
     }
-
+    else
+    {
+        if (mot[0] != '\0')
+        {
+            *pa = arbreCons(mot[0], 0, arbreConsVide(), arbreConsVide());
+            mot++;
+            dicoInsererMot(mot, &((*pa)->fg));
+        }
+        else
+        {
+            *pa = arbreCons('\0', 1, arbreConsVide(), arbreConsVide());
+        }
+    }
 }
