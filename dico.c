@@ -1,9 +1,9 @@
 #include "dico.h"
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
+#pragma region Dico_Afficher
 void affichageRec(TArbre a, char *str, short bufidx)
 {
     if (!(arbreEstVide(a)))
@@ -28,6 +28,7 @@ void dicoAfficher(TArbre a)
     char str[BUFFER_MAX];
     affichageRec(a, str, 0);
 }
+#pragma endregion
 
 int dicoNbOcc(char mot[], TArbre a)
 {
@@ -68,106 +69,118 @@ int dicoNbMotsDifferents(TArbre a)
     }
 }
 
-int piocherMot(char *motPioche)
+#pragma region Inserer_mot
+// On veut insérer un mot en respectant l'ordre alphabétique
+// On cree une procedure qui insere un noeud dans l'arbre
+void _inserer(char mot[], TArbre *pa)
 {
-    FILE *dico = NULL; // Le pointeur de fichier qui va contenir notre fichier
-    int nombreMots = 0, numMotChoisi = 0, i = 0;
-    int caractereLu = 0;
-    dico = fopen("dico.txt", "r"); // On ouvre le dictionnaire en lecture seule
+}
+// void dicoInsererMot(char mot[], TArbre *pa)
+// {
+//     if (*mot >= (*pa)->val)
+//     {
+//         if (*mot == (*pa)->val)
+//         {
+//             dicoInsererMot(mot++, (*pa)->fg);
+//         }
+//         else
+//         {
+//             dicoInsererMot(mot, (*pa)->fd);
+//         }
+//     }
+//     else
+//     {
+//         /* code */
+//     }
+// }
 
-    // On vérifie si on a réussi à ouvrir le dictionnaire
-    if (dico == NULL) // Si on n'a PAS réussi à ouvrir le fichier
+// if *mot lesser than val we move the node to the fd of the new one
+void dicoInsererMotIter(char mot[], TArbre *pa)
+{
+    TArbre *ptr = pa;
+
+    if (*ptr == NULL)
     {
-        printf("\nImpossible de charger le dictionnaire de mots");
-        return 0; // On retourne 0 pour indiquer que la fonction a échoué
-        // À la lecture du return, la fonction s'arrête immédiatement.
+        // cas d'une arbre vide
+        // on insere le mot
+        *pa = arbreCons(*mot, 0, NULL, NULL);
+        for (int i = 1; i < strlen(mot); i++)
+        {
+            (*pa)->fg = arbreCons(mot[i], 0, NULL, NULL);
+            pa = &((*pa)->fg);
+        }
+        (*pa)->fg = arbreCons('\0', 1, NULL, NULL);
+        return;
+    }
+    // '\0' is the smallest
+    // tq le caractere est superieur on parcour l'arbre
+    while ((*mot >= (*ptr)->val))
+    {
+        // on enregistre le parent
+        // si meme caractere parcours fils gauche
+        if (*mot == (*ptr)->val)
+        {
+            if (*mot == '\0')
+            {
+                (*ptr)->occur++;
+                return;
+            }
+            mot++;
+            pa = ptr;
+            ptr = &((*ptr)->fg);
+        }
+        else // fils droit sinon
+        {
+            pa = ptr;
+            ptr = &((*ptr)->fd);
+        }
+        if (*ptr == NULL)
+        {
+            break;
+        }
     }
 
-    // On compte le nombre de mots dans le fichier (il suffit de compter les
-    // entrées \n
-    do
+    // caractere est inferieur donc on doit inserer le reste du mot à gauche
+    // on test si on est dans le fils gauche ou droit du pere;
+    // probleme si les 2 fils sont null: fils droit par default
+    if ((*pa)->fg == *ptr)
     {
-        caractereLu = fgetc(dico);
-        if (caractereLu == '\n')
-            nombreMots++;
-    } while (caractereLu != EOF);
-
-    numMotChoisi = nombreAleatoire(nombreMots); // On pioche un mot au hasard
-
-    // On recommence à lire le fichier depuis le début. On s'arrête lorsqu'on est arrivé au bon
-    //mot
-    rewind(dico);
-    while (numMotChoisi > 0)
-    {
-        caractereLu = fgetc(dico);
-        if (caractereLu == '\n')
-            numMotChoisi--;
-    }
-
-    /* Le curseur du fichier est positionné au bon endroit.
-On n'a plus qu'à faire un fgets qui lira la ligne */
-    fgets(motPioche, 100, dico);
-
-    // On vire le \n à la fin
-    motPioche[strlen(motPioche) - 1] = '\0';
-    fclose(dico);
-
-    return 1; // Tout s'est bien passé, on retourne 1
-}
-
-int nombreAleatoire(int nombreMax)
-{
-    srand(time(NULL));
-    return (rand() % nombreMax);
-}
-
-void dicoInsererMot(char mot[], TArbre *pa)
-
-{
-
-    if (*pa != NULL)
-    {
-        if (mot[0] != '\0')
-        {
-            if ((*pa)->val == *mot)
-            {
-                mot++;
-                dicoInsererMot(mot, &((*pa)->fg));
-            }
-            else
-            {
-                if ((*pa)->fd != NULL)
-                {
-                    dicoInsererMot(mot, &((*pa)->fd));
-                }
-                else
-                {
-                    (*pa)->fd = arbreCons(mot[0], 0, arbreConsVide(), arbreConsVide());
-                    dicoInsererMot(mot, &(*pa));
-                }
-            }
-        }
-        else if ((*pa)->val != '\0' && mot[0] == '\0')
-        {
-            TArbre a = arbreCons('\0', 1, arbreConsVide(), *pa);
-            *pa = a;
-        }
-        else if ((*pa)->val == '\0' && mot[0] == '\0')
-        {
-            (*pa)->occur = (*pa)->occur + 1;
-        }
+        TArbre temp = (*pa)->fg;
+        (*pa)->fg = arbreCons(*mot, *mot == '\0' ? 1 : 0, NULL, temp);
     }
     else
     {
-        if (mot[0] != '\0')
+        if (*pa != *ptr)
         {
-            *pa = arbreCons(mot[0], 0, arbreConsVide(), arbreConsVide());
-            mot++;
-            dicoInsererMot(mot, &((*pa)->fg));
+            TArbre temp = (*pa)->fd;
+            (*pa)->fd = arbreCons(*mot, '\0' ? 1 : 0, NULL, temp);
         }
         else
         {
-            *pa = arbreCons('\0', 1, arbreConsVide(), arbreConsVide());
+            // cas de l'insertion dans racine
+            *pa = arbreCons(*mot, 0, NULL, *ptr);
+            ptr = pa;
         }
     }
+
+    // et on insere le reste du mot
+    if (*mot != '\0')
+    {
+        for (int i = 1; i < strlen(mot); i++)
+        {
+            (*ptr)->fg = arbreCons(mot[i], 0, NULL, NULL);
+            ptr = &((*ptr)->fg);
+        }
+        (*ptr)->fg = arbreCons('\0', 1, NULL, NULL);
+    }
+}
+#pragma endregion
+
+int dicoNbMotsTotal(TArbre a)
+{
+    if (a != NULL)
+    {
+        return a->occur + dicoNbMotsTotal(a->fd) + dicoNbMotsTotal(a->fg);
+    }
+    return 0;
 }
