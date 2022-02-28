@@ -111,17 +111,17 @@ int main()
     TArbre a;
     char motpioche[100];
 
-    // for (int i = 0; i < 30; i++)
-    // {
-    //     piocherMot(motpioche);
-    //     printf("%s\n", motpioche);
-    //     dicoInsererMotIter(motpioche, &a);
-    // }
+    for (int i = 0; i < 100; i++)
+    {
+        piocherMot(motpioche);
 
-    dicoInsererMotIter("Oie", &a);
-    dicoInsererMotIter("Tortue", &a);
-    dicoInsererMotIter("Ours", &a);
-    dicoInsererMotIter("Oursin", &a);
+        dicoInsererMot(motpioche, &a);
+    }
+
+    // dicoInsererMot("Oie", &a);
+    // dicoInsererMot("Tortue", &a);
+    // dicoInsererMot("Ours", &a);
+    // dicoInsererMot("Oursin", &a);
     printf("%d\n", dicoNbMotsTotal(a));
     dicoAfficher(a);
     arbreSuppr(a);

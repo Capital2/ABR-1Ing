@@ -95,7 +95,7 @@ void _inserer(char mot[], TArbre *pa)
 // }
 
 // if *mot lesser than val we move the node to the fd of the new one
-void dicoInsererMotIter(char mot[], TArbre *pa)
+void dicoInsererMot(char mot[], TArbre *pa)
 {
     TArbre *ptr = pa;
 
@@ -131,6 +131,7 @@ void dicoInsererMotIter(char mot[], TArbre *pa)
         }
         else // fils droit sinon
         {
+            // next checks can be here
             pa = ptr;
             ptr = &((*ptr)->fd);
         }
@@ -143,17 +144,17 @@ void dicoInsererMotIter(char mot[], TArbre *pa)
     // caractere est inferieur donc on doit inserer le reste du mot à gauche
     // on test si on est dans le fils gauche ou droit du pere;
     // probleme si les 2 fils sont null: fils droit par default
-    if ((*pa)->fg == *ptr)
+    if ((*pa)->fd == *ptr)
     {
-        TArbre temp = (*pa)->fg;
-        (*pa)->fg = arbreCons(*mot, *mot == '\0' ? 1 : 0, NULL, temp);
+        TArbre temp = (*pa)->fd;
+        (*pa)->fd = arbreCons(*mot, (*mot == '\0') ? 1 : 0, NULL, temp);
     }
     else
     {
         if (*pa != *ptr)
         {
-            TArbre temp = (*pa)->fd;
-            (*pa)->fd = arbreCons(*mot, '\0' ? 1 : 0, NULL, temp);
+            TArbre temp = (*pa)->fg;
+            (*pa)->fg = arbreCons(*mot, (*mot == '\0') ? 1 : 0, NULL, temp);
         }
         else
         {

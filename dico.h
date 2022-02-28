@@ -7,9 +7,9 @@
 /* -------------------------------------------------------*/
 
 void dicoAfficher(TArbre a);
-void dicoInsererMotIter(char mot[], TArbre *pa); // TODO (changed *pa) add alphabetic
+void dicoInsererMot(char mot[], TArbre *pa);
 int dicoNbOcc(char mot[], TArbre a);
 int dicoNbMotsDifferents(TArbre a); 
-int dicoNbMotsTotal(TArbre a); // todo
+int dicoNbMotsTotal(TArbre a);
 /* -------------------------------------------------------*/
 #endif
