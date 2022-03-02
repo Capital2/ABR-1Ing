@@ -2,11 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// creer une arbre vide
 TArbre arbreConsVide(void){
     TArbre ptr = NULL;
     return ptr;
 }
 
+// creer un noeud d'arbre
 TArbre arbreCons(char c, int n, TArbre fg, TArbre fd){
 
     TArbre ptr = malloc(sizeof(Noeds));
@@ -22,10 +24,12 @@ TArbre arbreCons(char c, int n, TArbre fg, TArbre fd){
     return ptr;
 }
 
+// tester si l'arbre est vide
 int arbreEstVide(TArbre a){
     return (a == NULL);
 }
 
+// retourne la valeur stocké dans un noead s'il existe
 char arbreRacineLettre(TArbre a){
     if (a != NULL)
     {
@@ -35,6 +39,7 @@ char arbreRacineLettre(TArbre a){
     exit(1);
 }
 
+// retourne le nbr d'occurrence stocké dans un noead
 int arbreRacineNbOcc(TArbre a){
     if (a != NULL)
     {
@@ -44,6 +49,7 @@ int arbreRacineNbOcc(TArbre a){
     exit(1);
 }
 
+// retourne le fils gauche d'un noeud
 TArbre arbreFilsGauche(TArbre a){
     if (a != NULL)
     {
@@ -53,6 +59,7 @@ TArbre arbreFilsGauche(TArbre a){
     exit(1);
 }
 
+// retourne le fils droit d'un noeud
 TArbre arbreFilsDroit(TArbre a){
     if (a != NULL)
     {
@@ -62,8 +69,9 @@ TArbre arbreFilsDroit(TArbre a){
     exit(1);
 }
 
+// libère l'espace mémoire alloué à l'arbre
 void arbreSuppr(TArbre a){
-    // Postfixe
+    // parcours postfixe est necessaire
     if (a != NULL)
     {
         arbreSuppr(a->fg);

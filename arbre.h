@@ -13,6 +13,7 @@ struct Noeds
 /* -------------------------------------------------------*/
 /* Primitives de gestion des arbres */
 /* -------------------------------------------------------*/
+
 TArbre arbreConsVide(void); int arbreEstVide(TArbre a);
 TArbre arbreCons(char c, int n, TArbre fg, TArbre fd);
 char arbreRacineLettre(TArbre a);

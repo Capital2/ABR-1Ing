@@ -122,7 +122,7 @@ int main()
     // dicoInsererMot("Tortue", &a);
     // dicoInsererMot("Ours", &a);
     // dicoInsererMot("Oursin", &a);
-    printf("%d\n", dicoNbMotsTotal(a));
+    printf("%d\n %d", dicoNbMotsTotal(a), dicoNbMotsDifferents(a));
     dicoAfficher(a);
     arbreSuppr(a);
     return 0;
